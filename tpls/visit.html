@@ -1,0 +1,21 @@
+<div>
+<div>
+# {{ visit.id }}
+</div>
+<div>
+{{ visit.opened_at }}
+</div>
+{% if visit.closed %}
+<div>
+{{ visit.closed_at }}
+{% if visit.closed_status != "normal" %}
+<div>
+{{ visit.closed_desc }}
+<div>
+{% endif %}
+</div>
+{% endif %}
+<div>
+<a href="{% url 'landing' %}">Закрыть</a>
+</div>
+</div>

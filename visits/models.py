@@ -81,4 +81,10 @@ class Check(OpenedFields):
 class Visit(ClientFields, OpenedFields, ClosedFields, ConfirmedFields):
     
     checks = models.ManyToManyField(Check, verbose_name="Счета", null=True, blank=True)
+    
+    @staticmethod
+    def get_opened_session(client):
+        return Visit.objects.filter(client=client, closed=False).first()
+    
+    
 
