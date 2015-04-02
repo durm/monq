@@ -1,9 +1,7 @@
 <div>
+{% include "session_desc.html" %}	
 <div>
-# {{ visit.id }}
-</div>
-<div>
-{{ visit.opened_at }}
+<a href="{% url 'start_check' %}">Открыть счет</a>
 </div>
 <div>
 {% include "close_visit.html" %}
