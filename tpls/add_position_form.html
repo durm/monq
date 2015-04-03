@@ -1,4 +1,6 @@
-<form>
+<form action="{% url 'add_position' %}" method="post">
+
+{% csrf_token %}
 <select name="check">
 <option></option>
 {% for check in visit.checks.all %}

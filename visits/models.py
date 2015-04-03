@@ -76,8 +76,9 @@ class Check(OpenedFields, ClosedFields, ConfirmedFields):
     
     def summary(self):
         c = Counter()
-        c.update(self.position_pairs.all())
-        return ((k[0], k[1], v, k[1]*v) for k,v in c)
+        for position_pair in self.position_pairs.all() :
+            c[position_pair] += 1
+        return c
         
     def __str__( self ):
         return "Check #" + str(self.id)

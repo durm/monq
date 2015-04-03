@@ -2,10 +2,8 @@
 
 {% block check_content %}
     <ul>
-    {% for position_pair in check.summary %}
-        <li>
-            {{ position_pair.position.name }}, {{ position_pair.price }}
-        </li>
+    {% for position_pair in check.position_pairs.all %}
+        {{ position_pair.position.name }}, {{ position_pair.price }}
     {% endfor %}
     </ul>
 {% endblock %}

@@ -4,6 +4,7 @@ from django.shortcuts import render, render_to_response, redirect
 from visits.models import *
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.template.context_processors import csrf
 
 def landing(request):
     return render_to_response("landing.html")
@@ -80,8 +81,11 @@ def add_position_form(request):
         return redirect(reverse("landing"))
 
     positions = Position.objects.all()
-    return render_to_response("add_position_form.html", {"positions": positions, "visit": current_visit})
+    c = {"positions": positions, "visit": current_visit}
+    c.update(csrf(request))
     
+    return render_to_response("add_position_form.html", c)
+
 @login_required
 def add_position(request):
     
@@ -89,7 +93,7 @@ def add_position(request):
     if current_visit is None :
         return redirect(reverse("landing"))
 
-    check_id = request.POST.getlist("check")
+    check_id = request.POST["check"]
     check = current_visit.checks.filter(id=check_id).first()
 
     assert check is not None, "Check is not in session"
@@ -97,7 +101,7 @@ def add_position(request):
     position_ids = request.POST.getlist("position")
     
     for position in Position.objects.filter(id__in=position_ids) :
-        position_pair = PositionPair.objects.create(position=position, current_price=position.price)
+        position_pair = PositionPair.objects.create(position=position, price=position.current_price)
         position_pair.save()
         check.position_pairs.add(position_pair)
         
