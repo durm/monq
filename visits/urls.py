@@ -10,4 +10,6 @@ urlpatterns = patterns('',
     url(r'^close/$', 'visits.views.close', name='close_visit'),
     url(r'^check/start/$', 'visits.views.start_check', name='start_check'),
     url(r'^check/(?P<id>[0-9]+)/$', 'visits.views.go_to_check', name='go_to_check'),
+    url(r'^add_position_form/$', 'visits.views.add_position_form', name='add_position_form'),
+    url(r'^add_position/$', 'visits.views.add_position', name='add_position'),
 )

@@ -1,8 +1,11 @@
-<div>
-<div>
-	
-</div>
-<div>
-{% include "close_visit.html" %}
-</div>
-</div>
+{% extends "parents/check.html" %}
+
+{% block check_content %}
+    <ul>
+    {% for position_pair in check.summary %}
+        <li>
+            {{ position_pair.position.name }}, {{ position_pair.price }}
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}

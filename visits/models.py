@@ -3,6 +3,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
+from django.utils.encoding import python_2_unicode_compatible
 from collections import Counter
 
 CLOSED_STATUS_CHOICES = (
@@ -59,25 +60,29 @@ class Position(models.Model):
     
     name = models.TextField(verbose_name="Наименование", blank=False, null=False)
     desc = models.TextField(verbose_name="Описание", blank=False, null=False)
-    price = models.FloatField(verbose_name="Цена", blank=False, null=False)
+    current_price = models.FloatField(verbose_name="Цена", blank=False, null=False)
     
 class PositionPair(models.Model):
     
     position = models.ForeignKey(Position)
-    current_price = models.FloatField()
+    price = models.FloatField()
         
     def set_current_price(self):
         self.current_price = self.position.price
         
-class Check(OpenedFields):
+class Check(OpenedFields, ClosedFields, ConfirmedFields):
     
-    position_pairs = models.ManyToManyField(PositionPair, verbose_name="Позиции")
+    position_pairs = models.ManyToManyField(PositionPair, verbose_name="Позиции", null=True, blank=True)
     
     def summary(self):
         c = Counter()
         c.update(self.position_pairs.all())
         return ((k[0], k[1], v, k[1]*v) for k,v in c)
+        
+    def __str__( self ):
+        return "Check #" + str(self.id)
 
+@python_2_unicode_compatible
 class Visit(ClientFields, OpenedFields, ClosedFields, ConfirmedFields):
     
     checks = models.ManyToManyField(Check, verbose_name="Счета", null=True, blank=True)
@@ -85,6 +90,7 @@ class Visit(ClientFields, OpenedFields, ClosedFields, ConfirmedFields):
     @staticmethod
     def get_opened_session(client):
         return Visit.objects.filter(client=client, closed=False).first()
-    
-    
-
+        
+    def __str__( self ):
+        return "Visit #" + str(self.id)
+        

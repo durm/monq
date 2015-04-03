@@ -4,11 +4,12 @@ from django.contrib import admin
 from visits.models import *
 
 class VisitAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['client', 'opened_at' , 'confirmed', 'confirmed_at', 'closed', 'closed_at', 'closed_status']
+    
 admin.site.register(Visit, VisitAdmin)
 
 class CheckAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['id', 'opened_at' , 'confirmed', 'confirmed_at', 'closed', 'closed_at', 'closed_status']
 admin.site.register(Check, CheckAdmin)
 
 class PositionPairAdmin(admin.ModelAdmin):
